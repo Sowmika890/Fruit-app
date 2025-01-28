@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="login-page">
+        <h2>Login</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+    </div>
+
+    <div class="shop-page" style="display: none;">
+        <section>
+            <h2>Categories</h2>
+            <div class="categories">
+                <button class="btn" onclick="filterItems('fruits')">Fruits</button>
+                <button class="btn" onclick="filterItems('vegetables')">Vegetables</button>
+                <button class="btn" onclick="filterItems('all')">All</button>
+            </div>
+        </section>
+
+        <section class="items">
+            <h2>Items</h2>
+            <div class="item fruits">
+                <img src="apple.jpeg" alt="Apple">
+                <p>🍎 Apple</p>
+                <p>Price: $1.50 / kg</p>
+                <button class="btn add-to-cart" data-name="Apple" data-price="1.5">Add to Cart</button>
+            </div>
+            <div class="item fruits">
+                <img src="oranges.jpeg" alt="Oranges">
+                <p>Oranges</p>
+                <p>Price: $1.50 / kg</p>
+                <button class="btn add-to-cart" data-name="Oranges" data-price="1.5">Add to Cart</button>
+            </div>
+            <div class="item fruits">
+                <img src="grapes.jpeg" alt="Grapes">
+                <p>Grapes</p>
+                <p>Price: $1.50 / kg</p>
+                <button class="btn add-to-cart" data-name="Grapes" data-price="1.5">Add to Cart</button>
+            </div>
+            <div class="item fruits">
+                <img src="watermellon.jpeg" alt="Watermelon">
+                <p>Watermelon</p>
+                <p>Price: $1.50 / kg</p>
+                <button class="btn add-to-cart" data-name="Watermelon" data-price="1.5">Add to Cart</button>
+            </div>
+            <div class="item fruits">
+                <img src="mango.jpeg" alt="Mango">
+                <p>Mango</p>
+                <p>Price: $1.50 / kg</p>
+                <button class="btn add-to-cart" data-name="Mango" data-price="1.5">Add to Cart</button>
+            </div>
+            <div class="item fruits">
+                <img src="banana.jpeg" alt="Banana">
+                <p>🍌 Banana</p>
+                <p>Price: $1.20 / kg</p>
+                <button class="btn add-to-cart" data-name="Banana" data-price="1.2">Add to Cart</button>
+            </div>
+            <div class="item vegetables">
+                <img src="carrot.jpeg" alt="Carrot">
+                <p>🥕 Carrot</p>
+                <p>Price: $2.00 / kg</p>
+                <button class="btn add-to-cart" data-name="Carrot" data-price="2">Add to Cart</button>
+            </div>
+            <div class="item vegetables">
+                <img src="tomato.jpeg" alt="Tomato">
+                <p>Tomato</p>
+                <p>Price: $2.00 / kg</p>
+                <button class="btn add-to-cart" data-name="Tomato" data-price="2">Add to Cart</button>
+            </div>
+            <div class="item vegetables">
+                <img src="bringal.jpeg" alt="Brinjal">
+                <p>Brinjal</p>
+                <p>Price: $2.00 / kg</p>
+                <button class="btn add-to-cart" data-name="Brinjal" data-price="2">Add to Cart</button>
+            </div>
+            <div class="item vegetables">
+                <img src="chilli.jpeg" alt="Chilli">
+                <p>Chilli</p>
+                <p>Price: $2.00 / kg</p>
+                <button class="btn add-to-cart" data-name="Chilli" data-price="2">Add to Cart</button>
+            </div>
+            <div class="item vegetables">
+                <img src="potato.jpeg" alt="Potato">
+                <p>🥔 Potato</p>
+                <p>Price: $1.00 / kg</p>
+                <button class="btn add-to-cart" data-name="Potato" data-price="1">Add to Cart</button>
+            </div>
+        </section>
+
+        <button onclick="viewCart()">View Cart</button>
+    </div>
+
+    <!-- Cart Page -->
+    <div class="cart-page" style="display: none;">
+        <h2>Your Cart</h2>
+        <div class="cart">
+            <ul id="cart-items"></ul>
+        </div>
+        <h3>Total: $<span id="cart-total">0.00</span></h3>
+        <button onclick="goBackToShop()">Back to Shop</button>
+    </div>
+
+    <script>
+        const loginPage = document.querySelector('.login-page');
+        const shopPage = document.querySelector('.shop-page');
+        const cartPage = document.querySelector('.cart-page');
+        const cartItems = document.getElementById('cart-items');
+        const cartTotal = document.getElementById('cart-total');
+    
+        let cart = [];
+    
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+    
+            if (username && password) {
+                alert('Login successful!');
+                loginPage.style.display = 'none';
+                shopPage.style.display = 'block';
+            } else {
+                alert('Please enter valid credentials.');
+            }
+        }
+    
+        function addToCart(event) {
+            const button = event.target;
+            const item = button.getAttribute('data-name');
+            const price = parseFloat(button.getAttribute('data-price'));
+    
+            cart.push({ item, price });
+            alert(`${item} has been added to the cart!`);
+        }
+    
+        function viewCart() {
+            shopPage.style.display = 'none';
+            cartPage.style.display = 'block';
+    
+            cartItems.innerHTML = '';
+            let total = 0;
+    
+            cart.forEach(cartItem => {
+                const li = document.createElement('li');
+                li.textContent = `${cartItem.item} - $${cartItem.price.toFixed(2)}`;
+                cartItems.appendChild(li);
+                total += cartItem.price;
+            });
+    
+            cartTotal.textContent = total.toFixed(2);
+        }
+    
+        function goBackToShop() {
+            cartPage.style.display = 'none';
+            shopPage.style.display = 'block';
+        }
+    
+        function filterItems(category) {
+            const items = document.querySelectorAll('.item');
+            items.forEach(item => {
+                if (category === 'all' || item.classList.contains(category)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+    
+        // Attach event listeners to "Add to Cart" buttons
+        const addToCartButtons = document.querySelectorAll('.add-to-cart');
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', addToCart);
+        });
+    
+        // Initialize the app
+        loginPage.style.display = 'block';
+    </script>
+</body>
+    
+</html>    
